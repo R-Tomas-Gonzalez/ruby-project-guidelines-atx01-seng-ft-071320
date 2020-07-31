@@ -2,6 +2,7 @@ class Controller
    attr_reader :user, :article
 
    def run
+      Article.articles_filtered
       welcome
       areyou
    end
@@ -29,7 +30,7 @@ class Controller
    intro_select = PROMPT.select("** What do you want to do today? **",%w(All_articles Your_saved_articles Exit))
        case intro_select
        when "All_articles"
-           self.random_articles
+           Controller.random_articles
        when "Your_saved_articles"
            
        when "Exit"
@@ -43,7 +44,8 @@ class Controller
    def self.random_articles
       @category_list = Article.all.collect do |articles|
          articles.category.capitalize
-      end.uniq 
+      end.uniq
+      #binding.pry
       Controller.select_articles  
    end
 
@@ -66,21 +68,22 @@ class Controller
    end
 
    def self.article_attributes
-      @article_selections = @variable.map do |article|
-         {
-           title: article.title,
-           abstract: article.abstract,
-           author: article.author,
-           url: article.url 
-         }
+   #@article_selections = 
+   @variable.each do |article|
+           puts "Title:".blue + " " + "#{article.title}"
+           puts "Description:".blue + " " + "#{article.abstract}"
+           puts "Author:".blue + " " + "#{article.author}"
+           puts "URL:".blue + " " + "#{article.url}"
+         puts " "
          end
-      self.add_to_favorites
+        #awesome_print(@article_selections)
+      # self.add_to_favorites
    end
 
-   def self.add_to_favorites
-      PROMPT.select(" Please choose your favorite article. ", @article_selections)
-      binding.pry
-   end
+   # def self.add_to_favorites
+   #    PROMPT.select(" Please choose your favorite article. ", @article_selections)
+   #    binding.pry
+   # end
 
 
 end
